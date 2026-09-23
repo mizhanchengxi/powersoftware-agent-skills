@@ -11,6 +11,7 @@ Given a target product spec (JSON), the skill guides the agent through:
 3. **Re-login** to pick up the newly granted `DEVELOPER` role.
 4. **Asset upload** — cover image, 3–20 detail images, and installer/archive; each goes through `checkFileExists → getPreSignedUrl → PUT` and returns the `objectName` used inside the product payload.
 5. **Product submission** to `/product/submit`, with strict schema validation for `TRIAL_FIRST` vs `PAY_FIRST` sales models and edition price ordering.
+6. **Return the `productUniqueCode`** (产品唯一编码) — the publish response now includes it; the skill prints it and records it to `ps-product.json` in the workspace, to be wired into the client license integration (see the companion `integrate-license` skill).
 
 Ships with dependency-free Node 18+ scripts — **no `npm install` needed**.
 

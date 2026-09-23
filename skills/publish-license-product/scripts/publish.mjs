@@ -7,7 +7,7 @@
 // agent to ask the user which form to publish (see the resolution block below).
 // The spec separates `assets` (local file paths) from `product` (the payload). Media MUST be
 // uploaded first: the payload stores the returned objectName (a relative URI), never a local path.
-import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { resolve, dirname, basename, join } from 'node:path';
 import { parseArgs, loadConfig, api, uploadFile, ok, fail } from './lib.mjs';
 
@@ -135,4 +135,50 @@ if (args['dry-run']) {
 // ---- Phase 5: submit --------------------------------------------------------
 const resp = await api(cfg, '/product/submit', { body: product, auth: true });
 if (resp.success !== true) fail(`product/submit rejected: ${resp.message || resp.code || JSON.stringify(resp)}`);
-ok(`product submitted for review, productId=${resp.content?.productId}. Status -> PENDING_RELEASE (platform review).`);
+
+const productId = resp.content?.productId;
+const productUniqueCode = resp.content?.productUniqueCode;
+ok(`product submitted for review, productId=${productId}. Status -> PENDING_RELEASE (platform review).`);
+
+// ---- Phase 6: surface the 产品唯一编码 (productUniqueCode) ------------------
+// The submit response now carries productUniqueCode — the stable, never-changing identifier the
+// client license SDK is initialised with: new LicenseClient({ productUniqueCode }). It is NOT a
+// secret (visible on the product page). Echo it and record it in the workspace so the license
+// integration (see the integrate-license skill) can pick it up. Older deployed backends may not
+// return it yet — degrade gracefully rather than fail the publish.
+console.log('\n================= 发布成功 / Published =================');
+console.log(`  产品名称 productName     : ${baseInfo.productName ?? '(n/a)'}`);
+console.log(`  软件版本 softwareVersion  : ${baseInfo.softwareVersion ?? '(n/a)'}`);
+console.log(`  商品ID   productId        : ${productId ?? '(n/a)'}`);
+if (productUniqueCode) {
+  console.log(`  产品唯一编码 productUniqueCode: ${productUniqueCode}   ← 授权接入用这个`);
+} else {
+  console.log('  产品唯一编码 productUniqueCode: (接口未返回 — 部署版本可能尚未支持；请到开发者后台产品页查看，并更新 ps-frontend-service)');
+}
+console.log('======================================================\n');
+
+// Record the identity in the current workspace (the project being published) so the license
+// integration can read it. Override the target with --emit <path>; suppress entirely with --no-emit.
+if (productUniqueCode && !args['no-emit']) {
+  const outPath = typeof args.emit === 'string' ? resolve(args.emit) : join(process.cwd(), 'ps-product.json');
+  const record = {
+    productUniqueCode,
+    productId: productId ?? null,
+    productName: baseInfo.productName ?? null,
+    productForm: form,
+    softwareVersion: baseInfo.softwareVersion ?? null,
+    licenseEnabled: isLicense,
+    updatedAt: new Date().toISOString(),
+  };
+  try {
+    writeFileSync(outPath, JSON.stringify(record, null, 2) + '\n', 'utf8');
+    ok(`wrote product identity -> ${outPath}`);
+  } catch (e) {
+    console.error(`⚠ could not write ${outPath}: ${e.message}（上方展示不受影响 / display above is unaffected）`);
+  }
+  console.log(
+    '下一步 / Next: 把 productUniqueCode 应用到当前工作空间的授权接入处（integrate-license）：\n' +
+    `  new LicenseClient({ productUniqueCode: '${productUniqueCode}' })\n` +
+    '  若当前工作空间未接入授权、或没有对应的授权位置，则只需把上面的编码提供给用户。'
+  );
+}

@@ -81,6 +81,16 @@ Product images/files are protected from manual `deleteFile`.
 }
 ```
 
+**Response `content`** (create and edit alike):
+
+```jsonc
+{ "productId": 123, "productUniqueCode": "P…-…" }
+```
+
+`productUniqueCode` (产品唯一编码) is generated at creation and never changes — it is the client
+license identifier (`new LicenseClient({ productUniqueCode })`). Surface it after publish and apply
+it to the workspace's license integration (see SKILL.md Phase 6); it is not a secret.
+
 ## Enums (exact string values)
 
 - `productForm`: `CLIENT_SOFTWARE` · `SERVER_SOFTWARE` · `ONLY_PROMOTION` · `DIGITAL_GOOD` · `PLUGIN`

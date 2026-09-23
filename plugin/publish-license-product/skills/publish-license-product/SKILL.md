@@ -41,6 +41,7 @@ Copy this checklist and mark progress. **Phase 2 is a hard stop.**
 - [ ] Phase 3.5: Determine the software form (productForm) — detect from the project, else ASK THE USER
 - [ ] Phase 4: Upload assets (cover + 3–20 detail images + installer) → collect objectNames
 - [ ] Phase 5: Submit the product for review
+- [ ] Phase 6: Surface the productUniqueCode and apply it to the workspace's license integration
 ```
 
 ### Phase 0 — Do you already have a partner account?
@@ -152,6 +153,34 @@ For `PAY_FIRST` buyout, `receivePayment.productPrice ≥ 1` (no ¥0 buyout).
 
 On success the product enters `PENDING_RELEASE` (platform review) — that is expected; publishing
 to the storefront is a further operator action, not part of this skill.
+
+### Phase 6 — Surface the `productUniqueCode` and apply it to the workspace
+
+A successful `POST /product/submit` returns `{ productId, productUniqueCode }`. The
+**`productUniqueCode` (产品唯一编码)** is the stable, never-changing identifier a client uses to
+talk to the license system — it is exactly the value the SDK is initialised with
+(`new LicenseClient({ productUniqueCode })`) and the argument `integrate-license`'s `smoke.mjs
+--product <code>` expects. It is **not** a secret (it is shown on the product page).
+
+`publish.mjs` already (a) prints it in a clear "发布成功" block and (b) records it to
+`ps-product.json` in the current working directory (the project being published). Override the
+target with `--emit <path>` or suppress the file with `--no-emit`. Then, as the agent, do this:
+
+1. **Always relay the code to the user** — state the `productUniqueCode` explicitly in your reply
+   (not just "published successfully").
+2. **Apply it to the workspace's license integration, if one exists.** Detect a license hookup in
+   the current project — e.g. a `LicenseClient(...)` construction, a `productUniqueCode` literal
+   or placeholder (such as `PRO-2026-001`), an env var like `PS_PRODUCT_UNIQUE_CODE`, or a
+   `ps-product.json`. If found, write the **real** returned `productUniqueCode` into that single
+   source of truth (replace the placeholder), so the client points at the just-published product.
+   Keep it consistent everywhere it appears; never ship it as if it were secret.
+3. **If there is no workspace, or the project has no license integration, only display it.** Do
+   not invent a config file or edit unrelated code. Hand the user the code and, when they want to
+   wire it up, point them to the [`integrate-license`](../integrate-license/SKILL.md) skill.
+
+If the response did **not** include `productUniqueCode` (an older deployed backend that predates
+this field), `publish.mjs` says so — in that case still finish the publish, tell the user the code
+was not returned, and where to read it (developer console → product page).
 
 ## Common failures
 
