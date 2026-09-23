@@ -1,0 +1,19 @@
+{
+  "name": "publish-license-product",
+  "description": "End-to-end skill to publish a license-enabled software product on PowerSoftware (register → partner human review gate → upload assets → submit).",
+  "version": "1.0.0",
+  "author": {
+    "name": "PowerSoftware / mizhanchengxi"
+  },
+  "homepage": "https://github.com/mizhanchengxi/powersoftware-agent-skills",
+  "repository": "https://github.com/mizhanchengxi/powersoftware-agent-skills",
+  "license": "MIT",
+  "keywords": [
+    "skill",
+    "agent-skill",
+    "powersoftware",
+    "license",
+    "software-distribution",
+    "automation"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "powersoftware-agent-skills",
+  "owner": {
+    "name": "PowerSoftware / mizhanchengxi",
+    "email": "contact@mizhanchengxi.local"
+  },
+  "metadata": {
+    "description": "Official Agent Skills published by the PowerSoftware (powersoftware.app / 幂栈网) team for automating recurring platform operations.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "publish-license-product",
+      "description": "End-to-end playbook to publish a license-enabled software product on PowerSoftware: register → partner human review gate → upload assets → submit. Ships with dependency-free Node 18+ scripts.",
+      "source": "./plugin/publish-license-product/",
+      "strict": false,
+      "skills": [
+        "./skills/publish-license-product"
+      ]
+    }
+  ]
+}

@@ -29,6 +29,17 @@ bash install.sh claude publish-license-product
 bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
 ```
 
+## 作为 Claude Code 插件安装（marketplace）
+
+本仓库已通过 [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) 注册为 **Claude Code Plugin Marketplace**。在 Claude Code 里执行：
+
+```
+/plugin marketplace add mizhanchengxi/powersoftware-agent-skills
+/plugin install publish-license-product@powersoftware-agent-skills
+```
+
+安装后，直接在对话里提到这个 skill 的名字即可——Claude Code 会按需动态加载。
+
 ## Skill 列表
 
 | Skill | 作用 |
