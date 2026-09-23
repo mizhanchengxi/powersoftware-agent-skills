@@ -6,6 +6,9 @@ config.local.json
 # product assets (upload these, don't commit)
 assets/
 **/assets/**
+# ...but keep the plugin's own asset (logo) tracked
+!plugin/publish-license-product/assets/
+!plugin/publish-license-product/assets/**
 
 # node
 node_modules/

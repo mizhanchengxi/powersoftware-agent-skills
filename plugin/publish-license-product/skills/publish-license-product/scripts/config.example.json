@@ -1,0 +1,7 @@
+{
+  "_comment": "Copy to config.local.json (git-ignored) and fill in. CN baseUrl avoids Turnstile on login/register.",
+  "baseUrl": "https://www.powersoftware.cn/frontApi",
+  "email": "you@example.com",
+  "password": "change-me-1",
+  "language": "zh-CN"
+}

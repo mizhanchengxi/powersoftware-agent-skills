@@ -35,6 +35,8 @@ bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
 |-------|--------------|
 | [`publish-license-product`](skills/publish-license-product/SKILL.md) | End-to-end playbook to **publish a license-enabled software product** on PowerSoftware: register a user → apply as partner (with a mandatory human review gate) → upload cover/detail images & installer → submit the product for review. Ships with dependency-free Node scripts. |
 
+> Prefer Qoder's plugin installer instead of copying files? A Qoder-native plugin package is also published at [`plugin/publish-license-product/`](plugin/publish-license-product/README.md) — drop the whole folder into your Qoder plugins directory or your project's plugin manifest.
+
 ## Install a skill
 
 Pick the skills directory for your agent and copy / symlink a skill folder into it:

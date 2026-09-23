@@ -1,0 +1,25 @@
+{
+  "name": "publish-license-product",
+  "displayName": "PowerSoftware Publish License Product",
+  "version": "1.0.0",
+  "description": "End-to-end skill to publish a license-enabled software product on PowerSoftware (register → partner human review gate → upload assets → submit).",
+  "descriptionZh": "在幂栈网（PowerSoftware）上一键上架带授权码的软件产品：注册 → 合作伙伴人工审核闸门 → 素材上传 → 提交产品。",
+  "author": {
+    "name": "PowerSoftware / mizhanchengxi"
+  },
+  "homepage": "https://github.com/mizhanchengxi/powersoftware-agent-skills",
+  "repository": "https://github.com/mizhanchengxi/powersoftware-agent-skills",
+  "logo": "./assets/avatar.svg",
+  "keywords": [
+    "qoder-plugin",
+    "skill",
+    "agent-skill",
+    "powersoftware",
+    "license",
+    "software-distribution",
+    "automation"
+  ],
+  "category": "developer-tools",
+  "tags": ["skill", "automation", "powersoftware"],
+  "skills": "./skills/"
+}

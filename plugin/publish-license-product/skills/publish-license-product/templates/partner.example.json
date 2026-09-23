@@ -1,0 +1,12 @@
+{
+  "_comment": "Partner onboarding profile for `node apply-partner.mjs --code 123456 --profile this.json`. Get countryId from `GET /developer/become/country/list`. CN -> alipayAccount; other countries -> paypalAccount.",
+  "name": "Acme Software Ltd",
+  "countryId": 86,
+  "organizationalType": "ENTERPRISE",
+  "phone": "13800000000",
+  "publicEmail": "contact@acme.example",
+  "currency": "CNY",
+  "alipayAccount": "pay@acme.example",
+  "introduce": "We build developer productivity tools.",
+  "githubUrl": "https://github.com/acme"
+}

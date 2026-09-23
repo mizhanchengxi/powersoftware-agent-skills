@@ -35,6 +35,8 @@ bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
 |-------|------|
 | [`publish-license-product`](skills/publish-license-product/SKILL.md) | 端到端剧本：在 PowerSoftware 上**发布一个支持授权码的软件产品**——注册用户 → 申请合作伙伴（**含强制人工审核闸门**）→ 上传封面/详情图与安装包 → 提交产品审核。附带零依赖 Node 脚本。 |
 
+> 不想手动拷文件？已额外提供 Qoder 原生插件包，位于 [`plugin/publish-license-product/`](plugin/publish-license-product/README.md)——直接把整个目录放进 Qoder 插件目录或项目的 plugin manifest 即可。
+
 ## 安装一个 Skill
 
 选择你的 Agent 对应的 skills 目录，把 Skill 文件夹拷贝或软链进去即可：
