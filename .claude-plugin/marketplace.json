@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Official Agent Skills published by the PowerSoftware (powersoftware.app / 幂栈网) team for automating recurring platform operations.",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
@@ -16,6 +16,15 @@
       "strict": false,
       "skills": [
         "./skills/publish-license-product"
+      ]
+    },
+    {
+      "name": "integrate-license",
+      "description": "Playbook to wire a client software product into the PowerSoftware license system with the official zero-dependency SDK (Node/Python/Java): pick the scenario, fetch the SDK from GitHub at runtime, implement trial/activation/edition-gating, and smoke-test. Ships with dependency-free Node 18+ scripts.",
+      "source": "./plugin/integrate-license/",
+      "strict": false,
+      "skills": [
+        "./skills/integrate-license"
       ]
     }
   ]

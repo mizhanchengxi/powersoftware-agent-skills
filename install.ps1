@@ -55,10 +55,17 @@ try {
     Copy-Item -Recurse $Src $Dest
     Write-Host "OK installed '$Skill' -> $Dest"
     Write-Host ""
-    Write-Host "Next steps:"
-    Write-Host "  cd `"$Dest\scripts`""
-    Write-Host "  copy config.example.json config.local.json   # fill in baseUrl/email/password"
-    Write-Host "  node register.mjs --send-code                # then follow the README quickstart"
+    if ($Skill -eq "integrate-license") {
+        Write-Host "Next steps:"
+        Write-Host "  cd `"$Dest\scripts`""
+        Write-Host "  node fetch-sdk.mjs --lang node --dest <your-project>/vendor   # pull the latest SDK source"
+        Write-Host "  node smoke.mjs --product <productUniqueCode>                  # verify platform connectivity"
+    } else {
+        Write-Host "Next steps:"
+        Write-Host "  cd `"$Dest\scripts`""
+        Write-Host "  copy config.example.json config.local.json   # fill in baseUrl/email/password"
+        Write-Host "  node register.mjs --send-code                # then follow the README quickstart"
+    }
 }
 finally {
     Remove-Item -Recurse -Force $Tmp -ErrorAction SilentlyContinue

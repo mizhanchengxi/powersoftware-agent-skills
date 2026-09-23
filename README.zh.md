@@ -25,9 +25,11 @@ iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-sk
 默认装到 **Qoder 个人 skills 目录**（`~/.qoder-cn/skills`）。可以传目标关键字（`qoder` / `claude`）或显式路径 + skill 名字，安装到其它位置：
 
 ```bash
-bash install.sh claude publish-license-product
-bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
+bash install.sh claude <skill-name>
+bash install.sh /path/to/your-repo/.qoder/skills <skill-name>
 ```
+
+`<skill-name>` 可填 `publish-license-product` 或 `integrate-license`。
 
 ## 作为 Claude Code 插件安装（marketplace）
 
@@ -36,6 +38,7 @@ bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
 ```
 /plugin marketplace add mizhanchengxi/powersoftware-agent-skills
 /plugin install publish-license-product@powersoftware-agent-skills
+/plugin install integrate-license@powersoftware-agent-skills
 ```
 
 安装后，直接在对话里提到这个 skill 的名字即可——Claude Code 会按需动态加载。
@@ -45,8 +48,9 @@ bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
 | Skill | 作用 |
 |-------|------|
 | [`publish-license-product`](skills/publish-license-product/SKILL.md) | 端到端剧本：在 PowerSoftware 上**发布一个支持授权码的软件产品**——注册用户 → 申请合作伙伴（**含强制人工审核闸门**）→ 上传封面/详情图与安装包 → 提交产品审核。附带零依赖 Node 脚本。 |
+| [`integrate-license`](skills/integrate-license/SKILL.md) | 剧本：用官方零依赖 SDK（Node / Python / Java）把**客户端软件接入 PowerSoftware 授权体系**——选择接入场景、运行时从 GitHub 拉取最新 SDK、实现机器码/试用/激活/版本门控/购买页跳转，并对接入做冒烟自检。附带零依赖 Node 脚本。 |
 
-> 不想手动拷文件？已额外提供 Qoder 原生插件包，位于 [`plugin/publish-license-product/`](plugin/publish-license-product/README.md)——直接把整个目录放进 Qoder 插件目录或项目的 plugin manifest 即可。
+> 不想手动拷文件？已额外提供 Qoder 原生插件包，分别位于 [`plugin/publish-license-product/`](plugin/publish-license-product/README.md) 与 [`plugin/integrate-license/`](plugin/integrate-license/README.md)——直接把整个目录放进 Qoder 插件目录或项目的 plugin manifest 即可。
 
 ## 安装一个 Skill
 
@@ -80,6 +84,16 @@ node apply-partner.mjs --code 123456 --profile ../templates/partner.example.json
 # ⛔ 等待平台运营审核通过你的合作伙伴申请，然后：
 node login.mjs                             # 重新登录以拿到 DEVELOPER 角色
 node publish.mjs --spec ../templates/product.license.example.json
+```
+
+## 快速上手（integrate-license）
+
+```bash
+cd skills/integrate-license/scripts
+node fetch-sdk.mjs --lang node --dest ../../<你的项目>/vendor   # 拉取最新 SDK 源码
+node smoke.mjs --product <productUniqueCode> \
+  --sdk ../../<你的项目>/vendor/powersoftware-license-sdk/node/src/index.js
+# 然后按 SKILL.md 第 3~5 步把 试用/verifyCached/激活 接入你的应用
 ```
 
 ## 安全说明

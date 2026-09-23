@@ -25,9 +25,11 @@ iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-sk
 Defaults to the **Qoder personal skills** directory (`~/.qoder-cn/skills`). Pass a target shortcut (`qoder` / `claude`) or an explicit path, plus a skill name, to install elsewhere:
 
 ```bash
-bash install.sh claude publish-license-product
-bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
+bash install.sh claude <skill-name>
+bash install.sh /path/to/your-repo/.qoder/skills <skill-name>
 ```
+
+Replace `<skill-name>` with `publish-license-product` or `integrate-license`.
 
 ## Install as a Claude Code plugin (marketplace)
 
@@ -36,6 +38,7 @@ This repo is also registered as a **Claude Code Plugin marketplace** via [`.clau
 ```
 /plugin marketplace add mizhanchengxi/powersoftware-agent-skills
 /plugin install publish-license-product@powersoftware-agent-skills
+/plugin install integrate-license@powersoftware-agent-skills
 ```
 
 After install, just mention the skill by name — Claude Code loads it dynamically whenever you ask to publish a product on PowerSoftware.
@@ -45,8 +48,9 @@ After install, just mention the skill by name — Claude Code loads it dynamical
 | Skill | What it does |
 |-------|--------------|
 | [`publish-license-product`](skills/publish-license-product/SKILL.md) | End-to-end playbook to **publish a license-enabled software product** on PowerSoftware: register a user → apply as partner (with a mandatory human review gate) → upload cover/detail images & installer → submit the product for review. Ships with dependency-free Node scripts. |
+| [`integrate-license`](skills/integrate-license/SKILL.md) | Playbook to **wire a client software product into the PowerSoftware license system** with the official zero-dependency SDK (Node / Python / Java): choose the integration scenario, fetch the latest SDK from GitHub at runtime, implement machine-code / trial / activation / edition-gating / purchase-redirect, and smoke-test the wiring. Ships with dependency-free Node scripts. |
 
-> Prefer Qoder's plugin installer instead of copying files? A Qoder-native plugin package is also published at [`plugin/publish-license-product/`](plugin/publish-license-product/README.md) — drop the whole folder into your Qoder plugins directory or your project's plugin manifest.
+> Prefer Qoder's plugin installer instead of copying files? Qoder-native plugin packages are also published at [`plugin/publish-license-product/`](plugin/publish-license-product/README.md) and [`plugin/integrate-license/`](plugin/integrate-license/README.md) — drop the whole folder into your Qoder plugins directory or your project's plugin manifest.
 
 ## Install a skill
 
@@ -80,6 +84,16 @@ node apply-partner.mjs --code 123456 --profile ../templates/partner.example.json
 # ⛔ wait for an operator to approve your partner application, then:
 node login.mjs                             # re-login to pick up the DEVELOPER role
 node publish.mjs --spec ../templates/product.license.example.json
+```
+
+## Quick start (integrate-license)
+
+```bash
+cd skills/integrate-license/scripts
+node fetch-sdk.mjs --lang node --dest ../../<your-project>/vendor   # pull the latest SDK source
+node smoke.mjs --product <productUniqueCode> \
+  --sdk ../../<your-project>/vendor/powersoftware-license-sdk/node/src/index.js
+# then follow SKILL.md Steps 3–5 to wire trial / verifyCached / activate into your app
 ```
 
 ## Security notes

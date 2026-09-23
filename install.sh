@@ -59,7 +59,17 @@ fi
 cp -r "$SRC" "$DEST"
 echo "✔ installed '$SKILL' → $DEST"
 echo
-echo "Next steps:"
-echo "  cd $DEST/scripts"
-echo "  cp config.example.json config.local.json   # fill in baseUrl/email/password"
-echo "  node register.mjs --send-code              # then follow the README quickstart"
+case "$SKILL" in
+  integrate-license)
+    echo "Next steps:"
+    echo "  cd $DEST/scripts"
+    echo "  node fetch-sdk.mjs --lang node --dest <your-project>/vendor   # pull the latest SDK source"
+    echo "  node smoke.mjs --product <productUniqueCode>                  # verify platform connectivity"
+    ;;
+  *)
+    echo "Next steps:"
+    echo "  cd $DEST/scripts"
+    echo "  cp config.example.json config.local.json   # fill in baseUrl/email/password"
+    echo "  node register.mjs --send-code              # then follow the README quickstart"
+    ;;
+esac

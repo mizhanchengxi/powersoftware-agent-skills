@@ -1,0 +1,26 @@
+{
+  "name": "integrate-license",
+  "displayName": "PowerSoftware Integrate License",
+  "version": "1.0.0",
+  "description": "Wire a client software product into the PowerSoftware license system with the official zero-dependency SDK (Node/Python/Java): machine-code, trial, activation, edition gating, purchase redirect, update check.",
+  "descriptionZh": "用官方零依赖 SDK（Node/Python/Java）把客户端软件接入幂栈网授权体系：机器码、试用领取、激活、版本门控、购买页跳转、版本更新检查。",
+  "author": {
+    "name": "PowerSoftware / mizhanchengxi"
+  },
+  "homepage": "https://github.com/mizhanchengxi/powersoftware-agent-skills",
+  "repository": "https://github.com/mizhanchengxi/powersoftware-agent-skills",
+  "logo": "./assets/avatar.svg",
+  "keywords": [
+    "qoder-plugin",
+    "skill",
+    "agent-skill",
+    "powersoftware",
+    "license",
+    "sdk",
+    "activation",
+    "software-distribution"
+  ],
+  "category": "developer-tools",
+  "tags": ["skill", "license", "powersoftware"],
+  "skills": "./skills/"
+}
