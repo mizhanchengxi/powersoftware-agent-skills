@@ -8,6 +8,27 @@
 
 Skill 就是一份纯 Markdown 剧本（可搭配脚本），告诉 AI Agent *怎么做*一件事。遵循通用的 `SKILL.md` 格式，可直接在 Qoder、Claude Code 以及任何兼容 MCP/Skill 的 Agent 中使用。
 
+## 一行命令安装
+
+**macOS / Linux / WSL**
+
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.sh)
+```
+
+**Windows PowerShell**
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.ps1 | iex
+```
+
+默认装到 **Qoder 个人 skills 目录**（`~/.qoder-cn/skills`）。可以传目标关键字（`qoder` / `claude`）或显式路径 + skill 名字，安装到其它位置：
+
+```bash
+bash install.sh claude publish-license-product
+bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
+```
+
 ## Skill 列表
 
 | Skill | 作用 |

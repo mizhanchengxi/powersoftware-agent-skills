@@ -8,6 +8,27 @@ A collection of [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/
 
 Skills are plain Markdown playbooks (+ optional scripts) that teach an AI coding agent *how* to perform a workflow. They follow the common `SKILL.md` format, so they work in Qoder, Claude Code, and any MCP/skill-compatible agent.
 
+## One-line install
+
+**macOS / Linux / WSL**
+
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.sh)
+```
+
+**Windows PowerShell**
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.ps1 | iex
+```
+
+Defaults to the **Qoder personal skills** directory (`~/.qoder-cn/skills`). Pass a target shortcut (`qoder` / `claude`) or an explicit path, plus a skill name, to install elsewhere:
+
+```bash
+bash install.sh claude publish-license-product
+bash install.sh /path/to/your-repo/.qoder/skills publish-license-product
+```
+
 ## Skills
 
 | Skill | What it does |
