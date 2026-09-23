@@ -1,5 +1,9 @@
 # PowerSoftware Agent Skills
 
+<p align="center">
+  <b>🌐 Language / 语言</b> &nbsp;·&nbsp; <a href="./README.md">English</a> &nbsp;|&nbsp; <a href="./README.zh.md">中文</a>
+</p>
+
 A collection of [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview) for automating recurring operational tasks on the [PowerSoftware](https://www.powersoftware.app) software-distribution platform.
 
 Skills are plain Markdown playbooks (+ optional scripts) that teach an AI coding agent *how* to perform a workflow. They follow the common `SKILL.md` format, so they work in Qoder, Claude Code, and any MCP/skill-compatible agent.
