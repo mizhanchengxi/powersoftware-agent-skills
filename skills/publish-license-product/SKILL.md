@@ -38,6 +38,7 @@ Copy this checklist and mark progress. **Phase 2 is a hard stop.**
 - [ ] Phase 1: Register a user
 - [ ] Phase 2: Apply as partner  ⛔ then WAIT for manual operator approval
 - [ ] Phase 3: Re-login to acquire the DEVELOPER role
+- [ ] Phase 3.5: Determine the software form (productForm) — detect from the project, else ASK THE USER
 - [ ] Phase 4: Upload assets (cover + 3–20 detail images + installer) → collect objectNames
 - [ ] Phase 5: Submit the product for review
 ```
@@ -86,6 +87,32 @@ node login.mjs
 
 `login.mjs` prints `developer: true|false`. Proceed only when it is `true`; otherwise the
 approval hasn't landed yet — wait and re-login.
+
+### Phase 3.5 — Determine the software form (productForm)
+
+`productForm` drives which fields are valid and which asset the installer maps to, so resolve it
+**before** uploading. `publish.mjs` resolves it in this order and back-fills the payload:
+
+1. `--form <VALUE>` on the command line (explicit override, wins).
+2. `spec.product.baseInfo.productForm` if the spec already sets it.
+3. **Auto-detect from the current working directory** — the software being published. Signals:
+   a `manifest.json` with `manifest_version` → `PLUGIN`; Electron/Tauri/`electron-builder`/NSIS
+   markers → `CLIENT_SOFTWARE`.
+
+Valid values: `CLIENT_SOFTWARE · SERVER_SOFTWARE · ONLY_PROMOTION · DIGITAL_GOOD · PLUGIN`.
+This skill publishes **license** products, which the platform restricts to `CLIENT_SOFTWARE` or
+`PLUGIN`.
+
+**If none of the three yields a value** (e.g. there is no analysable project directory, or its
+signals are absent/ambiguous), do **NOT** guess. `publish.mjs` stops with a prompt — relay it to
+the user and ask them to choose, then re-run with the chosen `--form`. Ask in the user's own
+terms, e.g.:
+
+> 这个软件是什么形态？(1) 桌面/客户端软件 CLIENT_SOFTWARE  (2) 浏览器插件 PLUGIN
+> —— 授权产品目前只支持这两种。告诉我选哪个。
+
+(For a non-license product the same prompt lists all five forms.) Only after the user answers,
+re-run `node publish.mjs --spec … --form <their choice>`.
 
 ### Phase 4 → 5 — Upload assets, then submit (ordering is mandatory)
 
@@ -137,6 +164,8 @@ to the storefront is a further operator action, not part of this skill.
 | `licenseEditions.priceAscending` | Platform-payment edition prices not strictly increasing. |
 | `productPrice.required` / `trialFirstZero` | Price vs `salesModel` mismatch (see rules above). |
 | suffix / size rejected | Wrong `businessType`, non-whitelisted file type, or oversize file. |
+| `cannot determine the software form` | No `--form`, no `baseInfo.productForm`, and nothing analysable in the cwd → **ask the user** which form, then re-run with `--form <VALUE>`. |
+| `LICENSE product ... must be CLIENT_SOFTWARE or PLUGIN` | A license/TRIAL_FIRST product was given a non-client form → confirm the real form with the user (usually CLIENT_SOFTWARE) and re-run. |
 
 ## Resources
 

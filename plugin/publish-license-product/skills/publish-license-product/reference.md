@@ -84,6 +84,9 @@ Product images/files are protected from manual `deleteFile`.
 ## Enums (exact string values)
 
 - `productForm`: `CLIENT_SOFTWARE` · `SERVER_SOFTWARE` · `ONLY_PROMOTION` · `DIGITAL_GOOD` · `PLUGIN`
+  - Resolution in `publish.mjs`: `--form` > `spec.baseInfo.productForm` > auto-detect from the
+    cwd (`manifest.json`+`manifest_version`→`PLUGIN`; Electron/Tauri/`electron-builder`/NSIS→`CLIENT_SOFTWARE`).
+    If still unknown it **stops and asks the user** — never guesses. License products must be `CLIENT_SOFTWARE`/`PLUGIN`.
 - `salesModel`: `PAY_FIRST` · `TRIAL_FIRST`
 - `licenseEditions[].billingPeriod`: `PERMANENT` · `MONTHLY` · `YEARLY`
 - `licenseEditions[].trialCountPeriod`: `TOTAL` · `MONTHLY`
