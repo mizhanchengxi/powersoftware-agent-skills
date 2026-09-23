@@ -1,0 +1,17 @@
+# local credentials & session
+config.local.json
+.ps-session.json
+*.session.json
+
+# product assets (upload these, don't commit)
+assets/
+**/assets/**
+
+# node
+node_modules/
+npm-debug.log*
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/
