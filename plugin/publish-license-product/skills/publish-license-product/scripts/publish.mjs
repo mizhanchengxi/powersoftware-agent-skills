@@ -2,6 +2,11 @@
 //   node publish.mjs --spec ../templates/product.license.example.json
 //   node publish.mjs --spec ....json --dry-run     (upload + assemble only, no submit)
 //   node publish.mjs --spec ....json --form PLUGIN (override the software form / 软件形态)
+//   node publish.mjs --spec ....json --product-id 123  (edit this product explicitly)
+//   node publish.mjs --spec ....json --new             (force CREATE a new product)
+// Duplicate guard: re-publishing the SAME product must carry its productId so /product/submit
+// EDITS instead of inserting a duplicate. The id is auto-read from `ps-product.json` (matched by
+// productName) unless overridden by --product-id / --new / spec.product.productId. See below.
 // Software form resolution order: --form  >  spec.product.baseInfo.productForm  >  auto-detect
 // from the current working directory. If none yields a value, the script STOPS and tells the
 // agent to ask the user which form to publish (see the resolution block below).
@@ -126,6 +131,48 @@ if ((form === 'CLIENT_SOFTWARE' || form === 'PLUGIN') && !hasExecutable) {
 }
 
 ok('assets uploaded & payload assembled.');
+
+// ---- Reuse an existing productId so re-publishing EDITS instead of creating a duplicate ----
+// `/product/submit` treats a payload WITHOUT productId as "create new" and WITH productId as
+// "edit". If this product was published before, Phase 6 recorded its identity (incl. productId)
+// in `ps-product.json`. Re-publishing the SAME product MUST carry that productId, otherwise every
+// run inserts a brand-new product. Resolution order (highest priority first):
+//   --product-id <id>                 edit this explicit id
+//   --new                             force CREATE, ignore any recorded id
+//   spec.product.productId            already present in the spec file
+//   ps-product.json (workspace)       auto-reuse, but ONLY when productName matches
+{
+  const pjPath = typeof args['product-json'] === 'string'
+    ? resolve(args['product-json'])
+    : join(process.cwd(), 'ps-product.json');
+  let recorded = null;
+  if (existsSync(pjPath)) { try { recorded = JSON.parse(readFileSync(pjPath, 'utf8')); } catch { recorded = null; } }
+  const sameName = !!recorded
+    && String(recorded.productName ?? '').trim() === String(baseInfo.productName ?? '').trim();
+
+  let id = null;
+  let idSource = null;
+  if (args.new) {
+    idSource = '--new (force create)';
+  } else if (typeof args['product-id'] === 'string') {
+    id = Number(args['product-id']); idSource = '--product-id';
+  } else if (product.productId !== undefined && product.productId !== null) {
+    id = Number(product.productId); idSource = 'spec.product.productId';
+  } else if (sameName && recorded.productId != null) {
+    id = Number(recorded.productId); idSource = basename(pjPath);
+  }
+
+  if (Number.isFinite(id) && id > 0) {
+    product.productId = id; // triggers the EDIT branch — no duplicate created
+    ok(`editing EXISTING product productId=${id} (source: ${idSource}) — will NOT create a duplicate.`);
+    console.log('   ⚠ 编辑分支要求 softwareVersion 高于线上版本；若版本未提升，后端会拒绝（请提升 spec.baseInfo.softwareVersion）。');
+  } else {
+    delete product.productId; // ensure the CREATE branch
+    if (args.new) ok('--new set: creating a NEW product (any recorded id ignored).');
+    else if (recorded && !sameName) console.log(`   ℹ 工作空间已有 ${basename(pjPath)}（productName=${recorded.productName ?? '?'}），但产品名不同 — 视为新产品，将新建。若其实是同一产品，请核对 productName 或用 --product-id 指定。`);
+    else ok('no prior productId found — this will CREATE a new product.');
+  }
+}
 
 if (args['dry-run']) {
   console.log(JSON.stringify(product, null, 2));

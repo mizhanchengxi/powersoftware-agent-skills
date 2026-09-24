@@ -81,6 +81,12 @@ Product images/files are protected from manual `deleteFile`.
 }
 ```
 
+**Create vs edit (duplicate guard):** an empty `productId` always INSERTS a new product, so
+re-publishing without it would create duplicates. `publish.mjs` therefore reuses the previously
+issued `productId` — read back from the workspace's `ps-product.json` (matched by `productName`),
+or from `spec.product.productId`, or forced via `--product-id <id>` / `--new` — so a re-publish of
+the same product goes down the EDIT branch. Editing requires a strictly greater `softwareVersion`.
+
 **Response `content`** (create and edit alike):
 
 ```jsonc

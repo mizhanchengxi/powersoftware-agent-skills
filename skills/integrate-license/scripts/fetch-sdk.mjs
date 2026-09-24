@@ -14,12 +14,12 @@
  *   node fetch-sdk.mjs --lang all --ref <branch|tag|sha>
  *
  * The SDK repo is the single source of truth:
- *   https://github.com/mizhanchengxi/powersoftware-license-sdk
+ *   https://github.com/powersoftware-app/powersoftware-license-sdk
  */
 import fs from 'node:fs';
 import path from 'node:path';
 
-const REPO = 'mizhanchengxi/powersoftware-license-sdk';
+const REPO = 'powersoftware-app/powersoftware-license-sdk';
 const API = `https://api.github.com/repos/${REPO}`;
 const HDRS = { 'User-Agent': 'ps-license-fetch-sdk' };
 

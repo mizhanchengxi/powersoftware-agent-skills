@@ -67,7 +67,7 @@ node scripts/fetch-sdk.mjs --lang python --dest ./vendor
 Zero dependencies (built-in `fetch`, Node 18+). Downloads the SDK source files of the requested
 language(s) straight from the GitHub **API** (`api.github.com` trees + blob, with a contents-API
 manifest fallback — deliberately **not** `raw.githubusercontent.com`, which is unreliable on some
-networks). From `github.com/mizhanchengxi/powersoftware-license-sdk` (default `main`, pin a
+networks). From `github.com/powersoftware-app/powersoftware-license-sdk` (default `main`, pin a
 tag/sha with `--ref`), preserving repo layout, e.g. into `./vendor/powersoftware-license-sdk/`:
 
 ```text

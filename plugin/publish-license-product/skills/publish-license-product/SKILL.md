@@ -135,7 +135,14 @@ What it does under the hood (see [reference.md](reference.md) for the raw endpoi
 2. Assemble payload: cover → `baseInfo.coverImage`; detail images → `introduce.images`
    (needs 3–20); installer → `baseInfo.clientSoftware[].softwarePackages[].executableFile` (or
    `sourceCodeFile` for server/digital-good).
-3. `POST /product/submit`.
+3. **Reuse the existing `productId` (avoid duplicates).** `/product/submit` creates a NEW product
+   when the payload has no `productId`, and EDITS when it does. If this product was published
+   before, its `productId` was recorded in `ps-product.json`; `publish.mjs` reads it back and puts
+   it into the payload so re-publishing UPDATES the same product instead of inserting a duplicate.
+   Resolution order: `--product-id <id>` > `--new` (force create) > `spec.product.productId` >
+   `ps-product.json` (auto, only when `productName` matches). The edit branch requires a higher
+   `softwareVersion` than what is live — bump `baseInfo.softwareVersion` for a new release.
+4. `POST /product/submit`.
 
 ### License-product rules the payload must satisfy
 

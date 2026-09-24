@@ -1,7 +1,7 @@
 # integrate-license — Reference
 
 Quick-lookup extracted from the authoritative guides in
-[`powersoftware-license-sdk/docs`](https://github.com/mizhanchengxi/powersoftware-license-sdk/tree/main/docs)
+[`powersoftware-license-sdk/docs`](https://github.com/powersoftware-app/powersoftware-license-sdk/tree/main/docs)
 (`客户端软件授权接入指南_v3`, `授权SDK规范_v3`, `授权接口文档_v3` — all bilingual).
 All endpoints are `POST {baseUrl}/frontApi/...`, JSON in/out, response envelope
 `{ success, content, tip }`; the SDK throws on `success !== true` with `errorCode` taken from
