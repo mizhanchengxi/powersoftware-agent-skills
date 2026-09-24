@@ -13,13 +13,13 @@ Skills are plain Markdown playbooks (+ optional scripts) that teach an AI coding
 **macOS / Linux / WSL**
 
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.sh)
+bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
 ```
 
 **Windows PowerShell**
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
 ```
 
 Defaults to the **Qoder personal skills** directory (`~/.qoder-cn/skills`). Pass a target shortcut (`qoder` / `claude`) or an explicit path, plus a skill name, to install elsewhere:
@@ -31,12 +31,15 @@ bash install.sh /path/to/your-repo/.qoder/skills <skill-name>
 
 Replace `<skill-name>` with `publish-license-product` or `integrate-license`.
 
+> Can't reach GitHub? The repo is mirrored on Gitee — clone it and run the installer locally:
+> `git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills && cd powersoftware-agent-skills && bash install.sh`.
+
 ## Install as a Claude Code plugin (marketplace)
 
 This repo is also registered as a **Claude Code Plugin marketplace** via [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json). Inside Claude Code, run:
 
 ```
-/plugin marketplace add mizhanchengxi/powersoftware-agent-skills
+/plugin marketplace add powersoftware-app/powersoftware-agent-skills
 /plugin install publish-license-product@powersoftware-agent-skills
 /plugin install integrate-license@powersoftware-agent-skills
 ```

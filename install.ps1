@@ -1,7 +1,7 @@
 # One-line installer for PowerSoftware Agent Skills (Windows / PowerShell).
 #
 # Usage:
-#   iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.ps1 | iex
+#   iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
 #
 # Or with explicit target/skill:
 #   .\install.ps1 -Target "$HOME\.qoder-cn\skills" -Skill "publish-license-product"
@@ -17,7 +17,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$RepoUrl = "https://github.com/mizhanchengxi/powersoftware-agent-skills.git"
+$RepoUrl = "https://github.com/powersoftware-app/powersoftware-agent-skills.git"
 
 switch ($Target.ToLower()) {
     "qoder"  { $Target = Join-Path $HOME ".qoder-cn\skills" }

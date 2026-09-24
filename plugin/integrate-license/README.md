@@ -3,7 +3,7 @@
 Packages the **`integrate-license`** Agent Skill. It teaches an AI coding agent how to wire a
 **client software product** into the [PowerSoftware](https://www.powersoftware.app) /
 [幂栈网](https://www.powersoftware.cn) license system using the official zero-dependency SDK
-([`powersoftware-license-sdk`](https://github.com/mizhanchengxi/powersoftware-license-sdk),
+([`powersoftware-license-sdk`](https://github.com/powersoftware-app/powersoftware-license-sdk),
 Node.js / Python / Java).
 
 ## What this plugin does
@@ -26,9 +26,9 @@ Ships with dependency-free Node 18+ scripts — **no `npm install` needed**.
 
 ## Provenance
 
-- **Source repo**: [mizhanchengxi/powersoftware-agent-skills](https://github.com/mizhanchengxi/powersoftware-agent-skills)
-- **Source skill directory**: [`skills/integrate-license/`](https://github.com/mizhanchengxi/powersoftware-agent-skills/tree/main/skills/integrate-license)
-- **SDK repo (single source of truth for code)**: [mizhanchengxi/powersoftware-license-sdk](https://github.com/mizhanchengxi/powersoftware-license-sdk)
+- **Source repo**: [powersoftware-app/powersoftware-agent-skills](https://github.com/powersoftware-app/powersoftware-agent-skills)
+- **Source skill directory**: [`skills/integrate-license/`](https://github.com/powersoftware-app/powersoftware-agent-skills/tree/main/skills/integrate-license)
+- **SDK repo (single source of truth for code)**: [powersoftware-app/powersoftware-license-sdk](https://github.com/powersoftware-app/powersoftware-license-sdk)
 - **Logo**: `assets/avatar.svg` — original artwork (keyhole + code brackets, PowerSoftware brand colors). No third-party asset reused.
 
 ## Included
@@ -55,7 +55,7 @@ Nothing from the source skill was omitted.
 
 ```bash
 # macOS / Linux / WSL
-bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.sh) qoder integrate-license
+bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh) qoder integrate-license
 ```
 
 ```powershell
@@ -66,7 +66,7 @@ bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-ag
 **Option B — Claude Code marketplace:**
 
 ```
-/plugin marketplace add mizhanchengxi/powersoftware-agent-skills
+/plugin marketplace add powersoftware-app/powersoftware-agent-skills
 /plugin install integrate-license@powersoftware-agent-skills
 ```
 

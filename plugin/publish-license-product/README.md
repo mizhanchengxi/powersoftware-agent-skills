@@ -17,9 +17,9 @@ Ships with dependency-free Node 18+ scripts — **no `npm install` needed**.
 
 ## Provenance
 
-- **Source repo**: [mizhanchengxi/powersoftware-agent-skills](https://github.com/mizhanchengxi/powersoftware-agent-skills)
-- **Source skill directory**: [`skills/publish-license-product/`](https://github.com/mizhanchengxi/powersoftware-agent-skills/tree/main/skills/publish-license-product)
-- **Upstream release**: [v1.0.0](https://github.com/mizhanchengxi/powersoftware-agent-skills/releases/tag/v1.0.0)
+- **Source repo**: [powersoftware-app/powersoftware-agent-skills](https://github.com/powersoftware-app/powersoftware-agent-skills)
+- **Source skill directory**: [`skills/publish-license-product/`](https://github.com/powersoftware-app/powersoftware-agent-skills/tree/main/skills/publish-license-product)
+- **Upstream release**: [v1.0.0](https://github.com/powersoftware-app/powersoftware-agent-skills/releases/tag/v1.0.0)
 - **Logo**: `assets/avatar.svg` — original artwork created for this plugin (keyhole + upload arrow, PowerSoftware brand colors). No third-party asset reused.
 
 ## Included
@@ -52,12 +52,12 @@ Nothing from the source skill was omitted.
 
 ```bash
 # macOS / Linux / WSL
-bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.sh) qoder publish-license-product
+bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh) qoder publish-license-product
 ```
 
 ```powershell
 # Windows PowerShell
-iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
 ```
 
 **Option B — drop this plugin folder into a Qoder project:**

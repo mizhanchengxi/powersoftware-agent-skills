@@ -13,13 +13,13 @@ Skill 就是一份纯 Markdown 剧本（可搭配脚本），告诉 AI Agent *�
 **macOS / Linux / WSL**
 
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.sh)
+bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
 ```
 
 **Windows PowerShell**
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
 ```
 
 默认装到 **Qoder 个人 skills 目录**（`~/.qoder-cn/skills`）。可以传目标关键字（`qoder` / `claude`）或显式路径 + skill 名字，安装到其它位置：
@@ -31,12 +31,15 @@ bash install.sh /path/to/your-repo/.qoder/skills <skill-name>
 
 `<skill-name>` 可填 `publish-license-product` 或 `integrate-license`。
 
+> GitHub 访问不畅？仓库在 Gitee 有镜像，可克隆后本地执行安装脚本：
+> `git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills && cd powersoftware-agent-skills && bash install.sh`。
+
 ## 作为 Claude Code 插件安装（marketplace）
 
 本仓库已通过 [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) 注册为 **Claude Code Plugin Marketplace**。在 Claude Code 里执行：
 
 ```
-/plugin marketplace add mizhanchengxi/powersoftware-agent-skills
+/plugin marketplace add powersoftware-app/powersoftware-agent-skills
 /plugin install publish-license-product@powersoftware-agent-skills
 /plugin install integrate-license@powersoftware-agent-skills
 ```

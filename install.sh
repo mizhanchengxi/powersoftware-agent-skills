@@ -2,7 +2,7 @@
 # One-line installer for PowerSoftware Agent Skills.
 #
 # Usage:
-#   bash <(curl -sL https://raw.githubusercontent.com/mizhanchengxi/powersoftware-agent-skills/main/install.sh)
+#   bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
 #
 # Or with explicit target/skill:
 #   bash install.sh <TARGET_DIR> <SKILL_NAME>
@@ -18,7 +18,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/mizhanchengxi/powersoftware-agent-skills.git"
+REPO_URL="https://github.com/powersoftware-app/powersoftware-agent-skills.git"
 TARGET_ARG="${1:-$HOME/.qoder-cn/skills}"
 SKILL="${2:-publish-license-product}"
 
