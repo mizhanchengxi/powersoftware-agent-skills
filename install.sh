@@ -4,6 +4,9 @@
 # Usage:
 #   bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
 #
+# In mainland China (GitHub raw unreachable), install via the Gitee mirror instead:
+#   bash <(curl -sL https://gitee.com/powersoftware-app/powersoftware-agent-skills/raw/main/install.sh)
+#
 # Or with explicit target/skill:
 #   bash install.sh <TARGET_DIR> <SKILL_NAME>
 #
@@ -18,7 +21,8 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/powersoftware-app/powersoftware-agent-skills.git"
+# 依次尝试的仓库镜像：GitHub 优先，中国大陆访问不通时自动回退 Gitee（两者内容一致）
+REPO_URLS="https://github.com/powersoftware-app/powersoftware-agent-skills.git https://gitee.com/powersoftware-app/powersoftware-agent-skills.git"
 TARGET_ARG="${1:-$HOME/.qoder-cn/skills}"
 SKILL="${2:-publish-license-product}"
 
@@ -36,14 +40,32 @@ fi
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-echo "→ cloning $REPO_URL"
-git clone --depth 1 "$REPO_URL" "$TMP" >/dev/null 2>&1
+REPO="$TMP/repo"
+ERRLOG="$TMP/git_err.log"
+CLONED=""
+# 镜像回退：GitHub 不通则自动改试 Gitee；每次 clone 到独立子目录，避免上次失败的残留
+# 触发 git "already exists and is not an empty directory"。平时静默，全失败时打印 git 原始报错。
+for url in $REPO_URLS; do
+  echo "→ cloning $url"
+  rm -rf "$REPO"
+  if git clone --depth 1 "$url" "$REPO" >/dev/null 2>"$ERRLOG"; then
+    CLONED="$REPO"
+    break
+  else
+    echo "  clone failed, trying next mirror..." >&2
+  fi
+done
+if [ -z "$CLONED" ]; then
+  echo "error: git clone failed from all mirrors (github + gitee)" >&2
+  [ -s "$ERRLOG" ] && cat "$ERRLOG" >&2
+  exit 1
+fi
 
-SRC="$TMP/skills/$SKILL"
+SRC="$CLONED/skills/$SKILL"
 if [ ! -d "$SRC" ]; then
   echo "error: skill '$SKILL' not found under skills/" >&2
   echo "available skills:" >&2
-  ls -1 "$TMP/skills" >&2
+  ls -1 "$CLONED/skills" >&2
   exit 1
 fi
 
