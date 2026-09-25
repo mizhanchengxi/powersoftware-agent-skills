@@ -20,18 +20,20 @@ Skill 就是一份纯 Markdown 剧本（可搭配脚本），告诉 AI Agent *�
    - Claude Code：   ~/.claude/skills
    （如果不确定自己属于哪个 Agent，先问我。）
 2. 两个 skill 都装：publish-license-product 和 integrate-license。
-3. 获取安装脚本。安装脚本已经内置“Gitee 优先、不通回退 GitHub”，所以最简单可靠的
-   方式（尤其在中国大陆）是先克隆仓库再本地执行：
-   - macOS / Linux / WSL：
-       git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills \
-         && cd powersoftware-agent-skills && bash install.sh <目标目录> <skill名>
-   - Windows PowerShell：
-       git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills $env:TEMP\ps-skills; \
-         cd $env:TEMP\ps-skills; .\install.ps1 -Target <目标目录> -Skill <skill名>
-   想用 GitHub？把上面的克隆地址换成 https://github.com/powersoftware-app/powersoftware-agent-skills.git
-   也可用一行式远程安装（需 raw 域名可达）：
-   - bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
-   - iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
+3. 获取安装脚本。安装脚本自身已经内置“Gitee 优先、不通回退 GitHub”。最可靠的方式
+   （尤其在中国大陆）是先克隆仓库再本地执行，两个镜像任选：
+   - Gitee 镜像（中国大陆推荐）：
+       git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills
+   - GitHub（权威源）：
+       git clone https://github.com/powersoftware-app/powersoftware-agent-skills.git
+   进入克隆目录后执行安装脚本：
+   - macOS / Linux / WSL：  cd powersoftware-agent-skills && bash install.sh <目标目录> <skill名>
+   - Windows PowerShell：   cd powersoftware-agent-skills; .\install.ps1 -Target <目标目录> -Skill <skill名>
+   也可不克隆，直接用一行式远程安装（需 raw 域名可达）：
+   - Gitee：  bash <(curl -sL https://gitee.com/powersoftware-app/powersoftware-agent-skills/raw/main/install.sh)
+   - GitHub： bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
+   - Gitee：  iwr -useb https://gitee.com/powersoftware-app/powersoftware-agent-skills/raw/main/install.ps1 | iex
+   - GitHub： iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
 4. 前置依赖：PATH 里有 git，并装了 Node.js 18+（脚本运行需要）；缺失请先安装。
 5. 完成后，列出已安装的 skill 目录以确认，并把每个 skill 的“Next steps”展示给我。
 ```
