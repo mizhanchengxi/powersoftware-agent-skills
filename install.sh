@@ -21,8 +21,8 @@
 
 set -euo pipefail
 
-# 依次尝试的仓库镜像：GitHub 优先，中国大陆访问不通时自动回退 Gitee（两者内容一致）
-REPO_URLS="https://github.com/powersoftware-app/powersoftware-agent-skills.git https://gitee.com/powersoftware-app/powersoftware-agent-skills.git"
+# 依次尝试的仓库镜像：Gitee 优先（中国大陆可达性好），不通时回退 GitHub 权威源（两者内容一致）
+REPO_URLS="https://gitee.com/powersoftware-app/powersoftware-agent-skills.git https://github.com/powersoftware-app/powersoftware-agent-skills.git"
 TARGET_ARG="${1:-$HOME/.qoder-cn/skills}"
 SKILL="${2:-publish-license-product}"
 
@@ -43,7 +43,7 @@ trap 'rm -rf "$TMP"' EXIT
 REPO="$TMP/repo"
 ERRLOG="$TMP/git_err.log"
 CLONED=""
-# 镜像回退：GitHub 不通则自动改试 Gitee；每次 clone 到独立子目录，避免上次失败的残留
+# 镜像回退：Gitee 优先，不通则回退 GitHub；每次 clone 到独立子目录，避免上次失败的残留
 # 触发 git "already exists and is not an empty directory"。平时静默，全失败时打印 git 原始报错。
 for url in $REPO_URLS; do
   echo "→ cloning $url"
@@ -56,7 +56,7 @@ for url in $REPO_URLS; do
   fi
 done
 if [ -z "$CLONED" ]; then
-  echo "error: git clone failed from all mirrors (github + gitee)" >&2
+  echo "error: git clone failed from all mirrors (gitee + github)" >&2
   [ -s "$ERRLOG" ] && cat "$ERRLOG" >&2
   exit 1
 fi

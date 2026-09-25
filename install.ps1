@@ -20,10 +20,10 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-# 依次尝试的仓库镜像：GitHub 优先，中国大陆访问不通时自动回退 Gitee（两者内容一致）
+# 依次尝试的仓库镜像：Gitee 优先（中国大陆可达性好），不通时回退 GitHub 权威源（两者内容一致）
 $RepoUrls = @(
-    "https://github.com/powersoftware-app/powersoftware-agent-skills.git",
-    "https://gitee.com/powersoftware-app/powersoftware-agent-skills.git"
+    "https://gitee.com/powersoftware-app/powersoftware-agent-skills.git",
+    "https://github.com/powersoftware-app/powersoftware-agent-skills.git"
 )
 
 switch ($Target.ToLower()) {
@@ -43,7 +43,7 @@ try {
     # git 会把 "Cloning into ..." 等正常进度写到 stderr；在 PowerShell 里用 2>&1 管道合并 stderr
     # 会把每行包成 ErrorRecord，配合 $ErrorActionPreference=Stop 会误抛 NativeCommandError 中断脚本
     # （实际 clone 已成功）。故：跑 git 期间临时降为 Continue、加 --quiet，并用真实退出码 $LASTEXITCODE 判定成败。
-    # 镜像回退：GitHub 不通则自动改试 Gitee；每次 clone 到独立子目录，避免上次失败的残留触发
+    # 镜像回退：Gitee 优先，不通则回退 GitHub；每次 clone 到独立子目录，避免上次失败的残留触发
     # "destination path already exists and is not an empty directory"。
     $prevEap = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
@@ -58,7 +58,7 @@ try {
     }
     $ErrorActionPreference = $prevEap
     if (-not $Repo) {
-        Write-Error "git clone failed from all mirrors (github + gitee)"
+        Write-Error "git clone failed from all mirrors (gitee + github)"
         exit 1
     }
 

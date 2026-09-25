@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
- * fetch-sdk.mjs — download the PowerSoftware License SDK source (latest, from GitHub) into a
- * target project. Zero dependencies (Node 18+, built-in fetch).
+ * fetch-sdk.mjs — download the PowerSoftware License SDK source (latest) into a target project.
+ * Zero dependencies (Node 18+, built-in fetch).
  *
- * Primary source is api.github.com (git trees + blob/contents API), NOT
- * raw.githubusercontent.com — the latter is blocked/unreliable on some networks. If GitHub is
- * unreachable (e.g. mainland China), it automatically falls back to the Gitee mirror
- * (gitee.com/<repo>/raw/<ref>/<path>). No git, no tar/unzip, Windows-safe.
+ * Primary source is the Gitee mirror (gitee.com/<repo>/raw/<ref>/<path>), which is reachable
+ * from mainland China; if Gitee fails it falls back to api.github.com (git trees + blob/contents,
+ * NOT raw.githubusercontent.com). NOTE: the Gitee path fetches files by the fixed MANIFEST list
+ * below, so a newly-added SDK file must be added to MANIFEST too; only the GitHub fallback
+ * auto-discovers files via the recursive tree API. No git, no tar/unzip, Windows-safe.
  *
  * Usage (run from the target project root, or pass --dest):
  *   node fetch-sdk.mjs --lang node                 # -> ./vendor/powersoftware-license-sdk/node/src/index.js
@@ -168,7 +169,7 @@ async function fetchFromGithub(args, prefixes, destRoot) {
 
 /** Download requested langs' SDK files from the Gitee mirror (by manifest path). Returns count. */
 async function fetchFromGitee(args, prefixes, destRoot) {
-  console.log(`-> GitHub unavailable, falling back to Gitee mirror: gitee.com/${REPO}`);
+  console.log(`-> listing SDK files from Gitee mirror gitee.com/${REPO} (primary)`);
   const wanted = MANIFEST.filter(p => prefixes.some(pref => p.startsWith(pref)));
   const refCandidates = [...new Set([args.ref, 'main', 'master'].filter(Boolean))];
   let count = 0;
@@ -190,15 +191,19 @@ async function main() {
   const prefixes = args.lang.flatMap(l => LANG_PREFIXES[l]);
   const destRoot = path.resolve(args.dest, 'powersoftware-license-sdk');
 
-  // GitHub first; on any failure or zero files, retry the whole thing against the Gitee mirror.
+  // Gitee first (reachable from mainland China); on failure or zero files, fall back to GitHub.
   let count = 0;
   try {
-    count = await fetchFromGithub(args, prefixes, destRoot);
+    count = await fetchFromGitee(args, prefixes, destRoot);
   } catch (err) {
-    console.log(`   GitHub failed (${err.message})`);
+    console.log(`   Gitee failed (${err.message})`);
   }
   if (!count) {
-    count = await fetchFromGitee(args, prefixes, destRoot);
+    try {
+      count = await fetchFromGithub(args, prefixes, destRoot);
+    } catch (err) {
+      console.log(`   GitHub failed (${err.message})`);
+    }
   }
 
   if (!count) throw new Error(`no SDK files fetched for lang(s) ${args.lang.join(',')} at ref ${args.ref}`);
@@ -209,6 +214,6 @@ async function main() {
 main().catch(err => {
   const cause = err.cause ? ` [cause: ${err.cause.code || err.cause.message || err.cause}]` : '';
   console.error(`FAIL ${err.message}${cause}`);
-  console.error('hint: tried GitHub then Gitee. GitHub API unauthenticated limit is 60 req/h per IP; if rate-limited, wait or pin --ref <commit-sha>.');
+  console.error('hint: tried Gitee then GitHub. GitHub API unauthenticated limit is 60 req/h per IP; if rate-limited, wait or pin --ref <commit-sha>.');
   process.exit(1);
 });
