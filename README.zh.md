@@ -8,6 +8,34 @@
 
 Skill 就是一份纯 Markdown 剧本（可搭配脚本），告诉 AI Agent *怎么做*一件事。遵循通用的 `SKILL.md` 格式，可直接在 Qoder、Claude Code 以及任何兼容 MCP/Skill 的 Agent 中使用。
 
+## 🤖 让 AI 编码助手帮你自动安装（推荐）
+
+把下面这段提示词复制后粘贴给 Qoder / Claude Code（或任何支持 Skill 的 Agent）。Agent 会自行识别操作系统与网络、执行安装脚本并回报结果——你不需要手敲任何命令：
+
+```text
+请帮我安装 PowerSoftware Agent Skills。
+
+1. 目标 skills 目录：
+   - Qoder 个人级：~/.qoder-cn/skills
+   - Claude Code：   ~/.claude/skills
+   （如果不确定自己属于哪个 Agent，先问我。）
+2. 两个 skill 都装：publish-license-product 和 integrate-license。
+3. 获取安装脚本。安装脚本已经内置“Gitee 优先、不通回退 GitHub”，所以最简单可靠的
+   方式（尤其在中国大陆）是先克隆仓库再本地执行：
+   - macOS / Linux / WSL：
+       git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills \
+         && cd powersoftware-agent-skills && bash install.sh <目标目录> <skill名>
+   - Windows PowerShell：
+       git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills $env:TEMP\ps-skills; \
+         cd $env:TEMP\ps-skills; .\install.ps1 -Target <目标目录> -Skill <skill名>
+   想用 GitHub？把上面的克隆地址换成 https://github.com/powersoftware-app/powersoftware-agent-skills.git
+   也可用一行式远程安装（需 raw 域名可达）：
+   - bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
+   - iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
+4. 前置依赖：PATH 里有 git，并装了 Node.js 18+（脚本运行需要）；缺失请先安装。
+5. 完成后，列出已安装的 skill 目录以确认，并把每个 skill 的“Next steps”展示给我。
+```
+
 ## 一行命令安装
 
 **macOS / Linux / WSL**

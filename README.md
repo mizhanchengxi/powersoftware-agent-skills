@@ -8,6 +8,36 @@ A collection of [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/
 
 Skills are plain Markdown playbooks (+ optional scripts) that teach an AI coding agent *how* to perform a workflow. They follow the common `SKILL.md` format, so they work in Qoder, Claude Code, and any MCP/skill-compatible agent.
 
+## 🤖 Let your AI coding agent install it (recommended)
+
+Copy the prompt below and paste it into Qoder / Claude Code (or any skill-capable agent). The agent detects your OS and network, runs the installer, and confirms the result — you don't type any commands yourself:
+
+```text
+Please install the PowerSoftware Agent Skills for me.
+
+1. Target skills directory:
+   - Qoder personal scope: ~/.qoder-cn/skills
+   - Claude Code:          ~/.claude/skills
+   (If it's unclear which agent you are, ask me first.)
+2. Install BOTH skills: publish-license-product and integrate-license.
+3. Get the installer. The installer already tries the Gitee mirror first and falls back to
+   GitHub, so the simplest reliable route — especially in mainland China — is to clone and
+   run it locally:
+   - macOS / Linux / WSL:
+       git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills \
+         && cd powersoftware-agent-skills && bash install.sh <target-dir> <skill-name>
+   - Windows PowerShell:
+       git clone https://gitee.com/powersoftware-app/powersoftware-agent-skills $env:TEMP\ps-skills; \
+         cd $env:TEMP\ps-skills; .\install.ps1 -Target <target-dir> -Skill <skill-name>
+   Prefer GitHub? Swap the clone host to https://github.com/powersoftware-app/powersoftware-agent-skills.git
+   Or use the one-line remote installer (needs the raw host reachable):
+   - bash <(curl -sL https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.sh)
+   - iwr -useb https://raw.githubusercontent.com/powersoftware-app/powersoftware-agent-skills/main/install.ps1 | iex
+4. Prerequisites: git on PATH and Node.js 18+ (for the skill scripts). Install them if missing.
+5. When finished, list the installed skill folders to confirm, and show me each skill's
+   "Next steps".
+```
+
 ## One-line install
 
 **macOS / Linux / WSL**
