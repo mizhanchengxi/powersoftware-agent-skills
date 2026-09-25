@@ -34,7 +34,18 @@ New-Item -ItemType Directory -Force -Path $Tmp | Out-Null
 
 try {
     Write-Host "-> cloning $RepoUrl"
-    git clone --depth 1 $RepoUrl $Tmp 2>&1 | Out-Null
+    # git 会把 "Cloning into ..." 等正常进度写到 stderr；在 PowerShell 里用 2>&1 管道合并 stderr
+    # 会把每行包成 ErrorRecord，配合上面 $ErrorActionPreference=Stop 会误抛 NativeCommandError 中断脚本
+    # （实际 clone 已成功）。故：跑 git 期间临时降为 Continue、加 --quiet，并用真实退出码 $LASTEXITCODE 判定成败。
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    git clone --depth 1 --quiet $RepoUrl $Tmp 2>&1 | Out-Null
+    $gitExit = $LASTEXITCODE
+    $ErrorActionPreference = $prevEap
+    if ($gitExit -ne 0) {
+        Write-Error "git clone failed (exit code $gitExit)"
+        exit 1
+    }
 
     $Src = Join-Path $Tmp "skills\$Skill"
     if (-not (Test-Path $Src)) {
